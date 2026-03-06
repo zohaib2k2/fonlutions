@@ -1,20 +1,23 @@
 import { useEffect, useRef, useState } from 'react';
 import { Shield, Server, Database, HardDrive, ArrowRight } from 'lucide-react';
 import { BrickWallFire } from 'lucide-react';
+
 const cyberServices = [
-    {
-        icon: BrickWallFire,
-        title: 'Network Security',
-        description:
-            'Our network security services protect your business from cyber threats and ensure the integrity of your data and systems.',
-        features: [
-            'Firewall management',
-            'Intrusion detection',
-            'VPN & remote access',
-            'Security audits',
-        ],
-        color: 'from-purple-500 to-pink-500',
-    },
+	{
+		icon: BrickWallFire,
+		title: 'Network Security',
+		description:
+			'Our network security services protect your business from cyber threats and ensure the integrity of your data and systems.',
+		features: [
+			'Firewall management',
+			'Intrusion detection',
+			'VPN & remote access',
+			'Security audits',
+		],
+		color: 'from-purple-500 to-pink-500',
+		image:
+			'https://images.unsplash.com/photo-1510511459019-5dda7724fd87?auto=format&fit=crop&w=1600&q=80', // network cables / equipment
+	},
 	{
 		icon: Shield,
 		title: 'Endpoint Security',
@@ -27,6 +30,8 @@ const cyberServices = [
 			'Continuous monitoring',
 		],
 		color: 'from-purple-500 to-pink-500',
+		image:
+			'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=1600&q=80', // laptop / workstation
 	},
 	{
 		icon: Server,
@@ -40,6 +45,8 @@ const cyberServices = [
 			'Managed LAN/WAN',
 		],
 		color: 'from-blue-500 to-cyan-500',
+		image:
+			'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1600&q=80', // server rack / datacenter
 	},
 	{
 		icon: Database,
@@ -53,6 +60,8 @@ const cyberServices = [
 			'Archival strategies',
 		],
 		color: 'from-green-500 to-emerald-500',
+		image:
+			'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1600&q=80', // storage / cloud imagery
 	},
 	{
 		icon: HardDrive,
@@ -66,6 +75,8 @@ const cyberServices = [
 			'Compliance & governance',
 		],
 		color: 'from-orange-500 to-amber-500',
+		image:
+			'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=1600&q=80', // cloud/datacenter skyline
 	},
 ];
 
@@ -112,7 +123,7 @@ export default function CyberServices() {
 						</span>
 					</div>
 					<h2 className="text-4xl lg:text-5xl font-bold text-white mb-4">
-						Secure & Reliable IT Operations
+						<span className="text-purple-400">Secure & Reliable</span> IT Operations
 					</h2>
 					<p className="text-lg text-gray-400">
 						We protect your digital assets and keep your infrastructure resilient,
@@ -125,22 +136,36 @@ export default function CyberServices() {
 					{cyberServices.map((service, index) => (
 						<div
 							key={service.title}
-							className={`group relative rounded-2xl overflow-hidden transition-all duration-700 ${
-								isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
-							}`}
-							style={{
-								transitionDelay: `${0.15 + index * 0.12}s`,
-								minHeight: 320,
-							}}
+							className={`group relative rounded-2xl overflow-hidden transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
+							style={{ transitionDelay: `${0.15 + index * 0.12}s`, minHeight: 320 }}
 							onMouseEnter={() => setHoveredIndex(index)}
 							onMouseLeave={() => setHoveredIndex(null)}
 						>
-							{/* Background colored panel (no image used) */}
+							{/* Background image + colored overlay */}
 							<div className="absolute inset-0">
-								<div
-									className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-6`}
+								<img
+									src={service.image}
+									alt={`${service.title} background`}
+									loading="lazy"
+									className="absolute inset-0 w-full h-full object-cover"
+									style={{ filter: 'contrast(.95) saturate(.9)', opacity: 0.6 }}
+									onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
 								/>
-								<div className="absolute inset-0 bg-gradient-to-t from-dark-900 via-dark-900/85 to-dark-900/60" />
+
+								<div className={`absolute inset-0 bg-gradient-to-br ${service.color}`} style={{ opacity: 0.08 }} />
+								<div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(17,24,39,0.55), rgba(17,24,39,0.85))' }} />
+
+								{/* bluish-purple glow overlay on hover */}
+								<div
+									className={`absolute inset-0 rounded-2xl pointer-events-none transition-opacity duration-500`}
+									style={{
+										background: 'radial-gradient(600px 300px at 20% 30%, rgba(124,58,237,0.16), rgba(79,70,229,0.08) 25%, transparent 60%), radial-gradient(400px 200px at 80% 70%, rgba(59,130,246,0.08), transparent 40%)',
+										opacity: hoveredIndex === index ? 1 : 0,
+										mixBlendMode: 'screen',
+										transform: hoveredIndex === index ? 'scale(1.02)' : undefined,
+										transitionDelay: hoveredIndex === index ? '0ms' : undefined,
+									}}
+								/>
 							</div>
 
 							{/* Content */}
@@ -194,14 +219,7 @@ export default function CyberServices() {
 								</div>
 							</div>
 
-							{/* Hover border effect (matches Services) */}
-							<div
-								className={`absolute inset-0 rounded-2xl border-2 transition-all duration-500 pointer-events-none ${
-									hoveredIndex === index
-										? 'border-purple-500/50 shadow-glow'
-										: 'border-transparent'
-								}`}
-							/>
+							<div className={`absolute inset-0 rounded-2xl border-2 transition-all duration-500 pointer-events-none ${hoveredIndex === index ? 'border-purple-500/50' : 'border-transparent'}`} style={{ boxShadow: hoveredIndex === index ? '0 30px 80px rgba(124,58,237,0.12)' : undefined }} />
 						</div>
 					))}
 				</div>
