@@ -19,6 +19,12 @@ const footerLinks = {
     { name: 'Documentation', href: '#' },
     { name: 'Support', href: '#contact' },
   ],
+  parentCompany: [
+    { name: 'Fonlutions Inc.', href: 'https://fonlutions.com/' },
+    { name: 'Home', href: 'https://fonlutions.com/' },
+    { name: 'Services', href: 'https://fonlutions.com/data-business/' },
+    { name: 'Blog', href: 'https://fonlutions.com/blog/' },
+  ],
 };
 
 const socialLinks = [
@@ -57,7 +63,7 @@ export default function Footer() {
                 <Code2 className="w-5 h-5 text-white" />
               </div>
               <span className="text-xl font-bold text-white">
-                Tech<span className="text-gradient">Nova</span>
+                <span className="text-gradient">fonlutions</span>
               </span>
             </a>
             <p className="text-gray-400 mb-6 max-w-sm">
@@ -135,6 +141,26 @@ export default function Footer() {
                         e.preventDefault();
                         scrollToSection(link.href);
                       }
+                    }}
+                    className="text-gray-400 hover:text-purple-400 transition-colors text-sm"
+                  >
+                    {link.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+          {/* parent company column */}
+          <div>
+            <h3 className="text-white font-semibold mb-4">Parent Company</h3>
+            <ul className="space-y-3">
+              {footerLinks.parentCompany.map((link) => (
+                <li key={link.name}>
+                  <a
+                    href={link.href}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      scrollToSection(link.href);
                     }}
                     className="text-gray-400 hover:text-purple-400 transition-colors text-sm"
                   >

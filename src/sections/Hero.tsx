@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { ArrowRight, Play, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import herobg from '/images/hero-bg.jpg';
+import herobg from '/cloud-consulting-v2-upscaled.png';
 
 export default function Hero() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -133,6 +133,8 @@ export default function Hero() {
           alt="Hero background"
           className="w-full h-full object-cover opacity-40"
         />
+        {/* Insert cloud Image at ccenter */}
+        <div></div>
         <div className="absolute inset-0 bg-gradient-to-b from-dark-900/50 via-dark-900/70 to-dark-900" />
       </div>
 

@@ -8,14 +8,14 @@ const contactInfo = [
   {
     icon: Mail,
     label: 'Email',
-    value: 'hello@technova.com',
-    href: 'mailto:hello@technova.com',
+    value: 'info@fonlutions.nl',
+    href: 'mailto:info@fonlutions.nl',
   },
   {
     icon: Phone,
     label: 'Phone',
-    value: '+1 (555) 123-4567',
-    href: 'tel:+15551234567',
+    value: '+31620144888',
+    href: 'tel:+31620144888',
   },
   {
     icon: MapPin,
@@ -70,6 +70,12 @@ export default function Contact() {
       setIsSubmitted(false);
       setFormData({ name: '', email: '', company: '', message: '' });
     }, 3000);
+    
+      // send message too.
+      const whatsappUrl = `https://wa.me/31620144888?text=${encodeURIComponent(
+        `Hello, I am ${formData.name}${formData.company ? ' from ' + formData.company : ''}. I would like to discuss my project: ${formData.message}. You can reach me at ${formData.email}`
+      )}`;
+    window.open(whatsappUrl, '_blank');
   };
 
   const handleChange = (

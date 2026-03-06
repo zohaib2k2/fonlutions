@@ -1,9 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
-import { Code, Cloud, Camera, Database, ArrowRight } from 'lucide-react';
+import { Code, Cloud, Camera, Database, ArrowRight, LucideCloudCog } from 'lucide-react';
 import fullstackImg from '/images/service-fullstack.jpg';
 import devopsImg from '/images/service-devops.jpg';
 import cctvImg from '/images/service-cctv.jpg';
 import webscrapingImg from '/images/service-webscraping.jpg';
+import cloudServiceImg from '/images/cloud-service.jpeg';
+import { GiServerRack } from "react-icons/gi";
+import { FiUploadCloud } from "react-icons/fi";
+
+
 const services = [
   {
     icon: Code,
@@ -22,6 +27,32 @@ const services = [
     features: ['CI/CD Pipelines', 'Docker & Kubernetes', 'AWS/Azure/GCP', 'Monitoring'],
     image: devopsImg,
     color: 'from-blue-500 to-cyan-500',
+  },
+  {
+    icon: FiUploadCloud,
+    title: 'Cloud Services',
+    description: "Empower your business with scalable cloud infrastructure and services. We provide cloud architecture design, migration, and management to help you leverage the full potential of the cloud.",
+    features: ['Cloud Architecture', 'Migration Services', 'Managed Cloud', 'Cost Optimization'],
+    image: cloudServiceImg,
+    color: 'from-green-500 to-emerald-500',
+  },
+  {
+    icon: LucideCloudCog,
+    title: 'Cloud Consulting',
+    description:
+      'Expert guidance on cloud strategy, architecture, and migration. We help you leverage the power of the cloud to drive innovation and efficiency.',
+    features: ['Cloud Strategy', 'Architecture Design', 'Migration Planning', 'Cost Optimization'],
+    image: devopsImg,
+    color: 'from-blue-500 to-cyan-500',
+  },
+  {
+    icon: GiServerRack,
+    title: 'Operation Services',
+    description:
+      'Comprehensive operational support and management services to ensure your systems run smoothly and efficiently.',
+    features: ['System Monitoring', 'Incident Management', 'Performance Optimization', '24/7 Support'],
+    image: cctvImg,
+    color: 'from-purple-500 to-pink-500',
   },
   {
     icon: Camera,
