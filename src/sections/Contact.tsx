@@ -20,8 +20,8 @@ const contactInfo = [
   {
     icon: MapPin,
     label: 'Location',
-    value: 'San Francisco, CA',
-    href: '#',
+    value: 'Tom Navislaan 25, 2493 BM Den Haag',
+    href: 'https://maps.google.com/maps/place/Tom+Navislaan+25,+2493+BM+Den+Haag/data=!4m2!3m1!1s0x47c5b62a16972af7:0x920987ed8204f464?entry=s&sa=X&ved=1t:78214&hl=en-GB&ictx=111',
   },
 ];
 
@@ -154,7 +154,34 @@ export default function Contact() {
                 </a>
               ))}
             </div>
-
+              <div
+                      className={`mt-4 ml-16 transition-all duration-700 ${
+                        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+                      }`}
+                      style={{ transitionDelay: '0.65s' }}
+                    >
+                      <div className="rounded-xl overflow-hidden border border-purple-500/20 shadow-lg shadow-purple-500/5">
+                        <iframe
+                          title="Fonlutions Office Location"
+                          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2454.123!2d4.2761!3d52.0589!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c5b62a16972af7%3A0x920987ed8204f464!2sTom%20Navislaan%2025%2C%202493%20BM%20Den%20Haag%2C%20Netherlands!5e0!3m2!1sen!2snl!4v1700000000000!5m2!1sen!2snl"
+                          width="100%"
+                          height="180"
+                          style={{ border: 0, display: 'block' }}
+                          allowFullScreen={false}
+                          loading="lazy"
+                          referrerPolicy="no-referrer-when-downgrade"
+                        />
+                      </div>
+                      <a
+                        href="https://maps.google.com/maps/place/Tom+Navislaan+25,+2493+BM+Den+Haag/data=!4m2!3m1!1s0x47c5b62a16972af7:0x920987ed8204f464"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 mt-2 text-xs text-purple-400 hover:text-purple-300 transition-colors"
+                      >
+                        <MapPin className="w-3 h-3" />
+                        Open in Google Maps
+                      </a>
+                    </div>
             {/* Social proof */}
             <div className="mt-12 p-6 rounded-2xl bg-dark-800/50 border border-white/5">
               <div className="flex items-center gap-4 mb-4">

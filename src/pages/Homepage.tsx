@@ -7,6 +7,7 @@ import Projects from '@/sections/Projects';
 import OurClients from '@/sections/OurClients';
 import Testimonials from '@/sections/Testimonials';
 import Contact from '@/sections/Contact';
+import CyberServices from '@/sections/CyberServices';
 
 /**
  * Homepage contains the sections that used to live in App.tsx.
@@ -18,6 +19,7 @@ export default function Homepage() {
       <Hero />
       <About />
       <Services />
+      <CyberServices />
       <Process />
       <Projects />
       <OurClients />
