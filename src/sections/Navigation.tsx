@@ -113,29 +113,29 @@ export default function Navigation() {
     </div>
   );
 
-  const ProcessFlyout = () => (
-    <div className="p-4 w-56">
-      <div className="text-sm font-semibold mb-2">Our Process</div>
-      <div className="text-xs text-gray-600">Discover how we move from discovery to delivery.</div>
-      <div className="mt-3">
-        <button onClick={() => scrollToSection('#process')} className="w-full text-sm py-2 rounded bg-dark-700 text-white">
-          See Process
-        </button>
-      </div>
-    </div>
-  );
+  // const _ProcessFlyout = () => (
+  //   <div className="p-4 w-56">
+  //     <div className="text-sm font-semibold mb-2">Our Process</div>
+  //     <div className="text-xs text-gray-600">Discover how we move from discovery to delivery.</div>
+  //     <div className="mt-3">
+  //       <button onClick={() => scrollToSection('#process')} className="w-full text-sm py-2 rounded bg-dark-700 text-white">
+  //         See Process
+  //       </button>
+  //     </div>
+  //   </div>
+  // );
 
-  const ProjectsFlyout = () => (
-    <div className="p-4 w-64">
-      <div className="text-sm font-semibold mb-2">Projects</div>
-      <div className="text-xs text-gray-600">Selected case studies across industries and scales.</div>
-      <div className="mt-3">
-        <button onClick={() => scrollToSection('#projects')} className="w-full text-sm py-2 rounded border border-white/10 text-white">
-          View Projects
-        </button>
-      </div>
-    </div>
-  );
+  // const _ProjectsFlyout = () => (
+  //   <div className="p-4 w-64">
+  //     <div className="text-sm font-semibold mb-2">Projects</div>
+  //     <div className="text-xs text-gray-600">Selected case studies across industries and scales.</div>
+  //     <div className="mt-3">
+  //       <button onClick={() => scrollToSection('#projects')} className="w-full text-sm py-2 rounded border border-white/10 text-white">
+  //         View Projects
+  //       </button>
+  //     </div>
+  //   </div>
+  // );
 
   const ContactFlyout = () => (
     <div className="p-4 w-56 bg-purple-800 mt-2 p-4 w-72  rounded-lg border border-purple-500">
