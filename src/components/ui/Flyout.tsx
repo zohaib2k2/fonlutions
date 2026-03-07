@@ -42,7 +42,10 @@ export default function Flyout({ children, href = '#', FlyoutContent, onTriggerC
       </a>
 
       {isOpen && (
-        <div className="absolute left-1/2 top-8 -translate-x-1/2 bg-white text-black rounded-md shadow-md">
+        <div
+          className="absolute left-1/2 top-8 -translate-x-1/2 rounded-md shadow-md border border-white/10
+                     bg-white/5 backdrop-blur-sm p-4"
+        >
           {renderFlyoutContent()}
         </div>
       )}

@@ -3,15 +3,15 @@ import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import logo from '/public/images/fonulations_logo.png';
 import Flyout from '@/components/ui/Flyout';
-import { href, Link, useNavigate } from 'react-router-dom';
+import {  Link, useNavigate } from 'react-router-dom';
+import TechnologyFlyout from '@/sections/TechnologyFlyout';
 
 const navLinks = [
   { name: 'Home', href: '#hero' },
-  // About is a dedicated page — navigate to /about
   { name: 'About', href: '/about' },
   { name: 'Services', href: '#services' },
   { name: 'Solutions', href: '#solutions' },
-  { name: 'Technology', href: '#technology' }, // placeholder for future "Blog" or "Resources" section
+  { name: 'Technology', href: '#cyberservices' }, // placeholder for future "Blog" or "Resources" section
   { name: 'Contact', href: '#contact' },
 ];
 
@@ -53,9 +53,9 @@ export default function Navigation() {
 
   // Flyout content components (use closures to access scrollToSection)
   const HomeFlyout = () => (
-    <div className="p-4 w-56">
+    <div className="bg-purple-800 mt-2 p-4 w-72  rounded-lg border border-purple-500 text-white">
       <div className="text-sm font-semibold mb-2">Welcome</div>
-      <div className="text-xs text-gray-600">Jump back to the top and see our hero showcase.</div>
+      <div className="text-xs text-gray-100">Jump back to the top and see our hero showcase.</div>
       <div className="mt-3">
         <button
           onClick={() => scrollToSection('#hero')}
@@ -68,10 +68,10 @@ export default function Navigation() {
   );
 
   const AboutFlyout = () => (
-    <div className="p-4 w-64">
+    <div className="bg-purple-800 mt-2 p-4 w-72  rounded-lg border border-purple-500 text-white">
       <div className="text-sm font-semibold mb-2">About Fonlutions</div>
-      <div className="text-xs text-gray-600">We craft user-centric products and digital experiences.</div>
-      <div className="text-xs text-gray-600">Learn more about our methodology and teams.</div>
+      <div className="text-xs text-gray-100">We craft user-centric products and digital experiences.</div>
+      <div className="text-xs text-gray-100">Learn more about our methodology and teams.</div>
       <div className="mt-3 flex gap-2">
         {/* button click should lead to <Link href="/about#strategy"> */}
         <Link to="/about#strategy">
@@ -89,9 +89,9 @@ export default function Navigation() {
   );
 
   const ServicesFlyout = () => (
-    <div className="p-4 w-72 grid grid-cols-1 gap-3">
+    <div className=" bg-purple-800 mt-2 p-4 w-72  rounded-lg border border-purple-500 text-white">
       <div className="text-sm font-semibold">Services</div>
-      <div className="text-xs text-gray-600">Product design, web & mobile development, and growth engineering.</div>
+      <div className="text-xs text-gray-100">Product design, web & mobile development, and growth engineering.</div>
 
       <div className="grid grid-cols-1 gap-2 mt-2">
         <button onClick={() => scrollToSection('#services')} className="text-sm text-left px-3 py-2 rounded hover:bg-gray-100/5">
@@ -138,9 +138,9 @@ export default function Navigation() {
   );
 
   const ContactFlyout = () => (
-    <div className="p-4 w-56">
+    <div className="p-4 w-56 bg-purple-800 mt-2 p-4 w-72  rounded-lg border border-purple-500">
       <div className="text-sm font-semibold mb-2">Get in touch</div>
-      <div className="text-xs text-gray-600">Let's talk about your next project.</div>
+      <div className="text-xs text-gray-100">Let's talk about your next project.</div>
       <div className="mt-3">
         <button onClick={() => scrollToSection('#contact')} className="w-full text-sm py-2 rounded bg-gradient-to-r from-purple-500 to-blue-500 text-white">
           Contact Us
@@ -148,13 +148,58 @@ export default function Navigation() {
       </div>
     </div>
   );
+  const SolutionsFlyout = () => (
+    <div className=" bg-purple-800 mt-2 p-4 w-72  rounded-lg border border-purple-500 text-white">
+      <div className="font-semibold mb-2 text-white">Solutions</div>
+      <div className="text-xs text-purple-200/80 mb-3">Tailored technology solutions for your business challenges.</div>
 
+      <div className="grid gap-2">
+        <button
+          onClick={() => scrollToSection('#services')}
+          className="flex items-center gap-3 text-sm text-left px-3 py-2 rounded hover:bg-white/5 transition-colors"
+        >
+          <span className="inline-block w-2 h-2 rounded-full bg-purple-400" />
+          Cloud Solutions
+        </button>
+
+        <button
+          onClick={() => scrollToSection('#projects')}
+          className="flex items-center gap-3 text-sm text-left px-3 py-2 rounded hover:bg-white/5 transition-colors"
+        >
+          <span className="inline-block w-2 h-2 rounded-full bg-purple-400" />
+          Custom Software Development
+        </button>
+
+        <button
+          onClick={() => scrollToSection('#technology')}
+          className="flex items-center gap-3 text-sm text-left px-3 py-2 rounded hover:bg-white/5 transition-colors"
+        >
+          <span className="inline-block w-2 h-2 rounded-full bg-purple-400" />
+          Data & Analytics
+        </button>
+
+        <button
+          onClick={() => scrollToSection('#cyberservices')}
+          className="flex items-center gap-3 text-sm text-left px-3 py-2 rounded hover:bg-white/5 transition-colors"
+        >
+          <span className="inline-block w-2 h-2 rounded-full bg-purple-400" />
+          Cybersecurity
+        </button>
+      </div>
+
+      <div className="mt-3">
+        <button onClick={() => scrollToSection('#contact')} className="w-full text-sm py-2 rounded bg-gradient-to-r from-purple-500 to-blue-500 text-white">
+          Talk to Us
+        </button>
+      </div>
+    </div>
+  );
   const flyoutMap: Record<string, React.ComponentType | null> = {
     Home: HomeFlyout,
     About: AboutFlyout,
     Services: ServicesFlyout,
-    Process: ProcessFlyout,
-    Projects: ProjectsFlyout,
+    Solutions: SolutionsFlyout,
+    Technology: TechnologyFlyout,
     Contact: ContactFlyout,
   };
 

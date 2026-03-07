@@ -1,10 +1,10 @@
 import Process from '@/sections/Process';
-
+import OurVision from '@/sections/OurVision';
 
 export default function AboutPage() {
   return (
     <main id="about" className="relative z-10 py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-1 sm:px-1 lg:px-1">
         {/* Header */}
         <header className="mb-12">
           <h1 className="text-4xl lg:text-5xl font-bold text-white mb-3">
@@ -20,6 +20,8 @@ export default function AboutPage() {
 
           </p>
         </header>
+        {/* Vision */}
+          <OurVision />
 
         {/* Strategy */}
         <section id="strategy" className="mb-4">
