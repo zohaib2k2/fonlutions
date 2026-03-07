@@ -1,5 +1,19 @@
 import  { useState } from 'react';
-
+// import logos (replace with real ones from Wikimedia / official press kits / CDN)
+import esetLogo from '/images/logos/eset.png';
+import kasperskyLogo from '/images/logos/kaspersky.png';
+import trendLogo from '/images/logos/trend.png';
+import sophosLogo from '/images/logos/sophos.png';
+import crowdLogo from '/images/logos/crowd.png';
+import ciscoLogo from '/images/logos/cisco.png';
+import tpLinkLogo from '/images/logos/tp-link.png';
+import hikvisionLogo from '/images/logos/hikvision.png';
+import arubaLogo from '/images/logos/aruba.jpeg';
+import zktecoLogo from '/images/logos/zkteco.webp';
+import microsoftLogo from '/images/logos/microsoft.png';
+import exclaimerLogo from '/images/logos/exclaimer.png';
+import codetwoLogo from '/images/logos/codetwo.png';
+import awsLogo from '/images/logos/aws.png';
 type Props = {
   onNavigate?: (href: string) => void;
 };
@@ -15,11 +29,11 @@ const DATA = {
     ],
     logos: [
       // replace these placeholder URLs with real logo URLs (Wikimedia / official press kits / CDN)
-      '/images/logos/eset.png',
-      '/images/logos/kaspersky.png',
-      '/images/logos/trend.png',
-      '/images/logos/sophos.png',
-      '/images/logos/crowd.png',
+      esetLogo,
+      kasperskyLogo,
+      trendLogo,
+      sophosLogo,
+      crowdLogo,
     ],
   },
   infra: {
@@ -32,11 +46,11 @@ const DATA = {
       'Backup & disaster recovery',
     ],
     logos: [
-      '/images/logos/cisco.png',
-      '/images/logos/tp-link.png',
-      '/images/logos/hikvision.png',
-      '/images/logos/aruba.jpeg',
-      '/images/logos/zkteco.webp',
+      ciscoLogo,
+      tpLinkLogo,
+      hikvisionLogo,
+      arubaLogo,
+      zktecoLogo,
     ],
   },
   cloud: {
@@ -49,10 +63,10 @@ const DATA = {
       'SaaS integrations',
     ],
     logos: [
-      '/images/logos/microsoft.png',
-      '/images/logos/exclaimer.png',
-      '/images/logos/codetwo.png',
-      '/images/logos/aws.png',
+      microsoftLogo,
+      exclaimerLogo,
+      codetwoLogo,
+      awsLogo,
     ],
   },
 };
