@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Check, Award, Users, Zap } from 'lucide-react';
+import teamImg from '/images/about-team.jpg';
 
 const features = [
   'Expert team of engineers & developers',
@@ -148,7 +149,7 @@ export default function About() {
               {/* Main image */}
               <div className="relative rounded-2xl overflow-hidden">
                 <img
-                  src="/images/about-team.jpg"
+                  src={teamImg}
                   alt="Our team collaborating"
                   className="w-full h-auto object-cover"
                 />
