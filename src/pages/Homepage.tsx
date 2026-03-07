@@ -20,7 +20,7 @@ export default function Homepage() {
       <Services />
       <CyberServices />
       <Process />
-      <Projects />
+      {/* <Projects /> */}
       <OurClients />
       <Testimonials />
       <Contact />

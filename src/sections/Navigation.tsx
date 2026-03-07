@@ -3,15 +3,15 @@ import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import logo from '/public/images/fonulations_logo.png';
 import Flyout from '@/components/ui/Flyout';
-import { Link, useNavigate } from 'react-router-dom';
+import { href, Link, useNavigate } from 'react-router-dom';
 
 const navLinks = [
   { name: 'Home', href: '#hero' },
   // About is a dedicated page — navigate to /about
   { name: 'About', href: '/about' },
   { name: 'Services', href: '#services' },
-  { name: 'Process', href: '#process' },
-  { name: 'Projects', href: '#projects' },
+  { name: 'Solutions', href: '#solutions' },
+  { name: 'Technology', href: '#technology' }, // placeholder for future "Blog" or "Resources" section
   { name: 'Contact', href: '#contact' },
 ];
 
@@ -163,7 +163,7 @@ export default function Navigation() {
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           isScrolled
-            ? 'bg-dark-900/80 backdrop-blur-xl border-b border-white/5'
+            ? 'bg-purple-700/50 backdrop-blur-xl to-purple-600 border-b border-white/5'
             : 'bg-transparent bg-gradient-to-b from-purple-500/50 to-transparent border-b border-white/0'
         }`}
       >
@@ -187,7 +187,7 @@ export default function Navigation() {
                 return (
                   <div key={link.name} className="relative">
                     <Flyout href={link.href} FlyoutContent={FlyoutContent} onTriggerClick={() => scrollToSection(link.href)}>
-                      <div className="text-sm text-gray-300 hover:text-white transition-colors duration-300">
+                      <div className="text-lg text-gray-100 hover:text-white transition-colors duration-300">
                         {link.name}
                       </div>
                     </Flyout>

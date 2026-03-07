@@ -82,6 +82,7 @@ const cyberServices = [
 
 export default function CyberServices() {
 	const sectionRef = useRef<HTMLElement | null>(null);
+	const canvasRef = useRef<HTMLCanvasElement | null>(null); // particle canvas ref
 	const [isVisible, setIsVisible] = useState(false);
 	const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
@@ -99,12 +100,104 @@ export default function CyberServices() {
 		return () => obs.disconnect();
 	}, []);
 
+	// Particle animation (copied from Hero)
+	useEffect(() => {
+		const canvas = canvasRef.current;
+		if (!canvas) return;
+		const ctx = canvas.getContext('2d');
+		if (!ctx) return;
+
+		const resizeCanvas = () => {
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
+		};
+		resizeCanvas();
+		window.addEventListener('resize', resizeCanvas);
+
+		type Particle = { x: number; y: number; vx: number; vy: number; radius: number };
+		const particles: Particle[] = [];
+		const particleCount = 80;
+		const connectionDistance = 150;
+		const mouseDistance = 200;
+		const mouse = { x: -9999, y: -9999 };
+
+		for (let i = 0; i < particleCount; i++) {
+			particles.push({
+				x: Math.random() * canvas.width,
+				y: Math.random() * canvas.height,
+				vx: (Math.random() - 0.5) * 0.5,
+				vy: (Math.random() - 0.5) * 0.5,
+				radius: Math.random() * 2 + 1,
+			});
+		}
+
+		const handleMouseMove = (e: MouseEvent) => {
+			mouse.x = e.clientX;
+			mouse.y = e.clientY;
+		};
+		window.addEventListener('mousemove', handleMouseMove);
+
+		let raf = 0;
+		const animate = () => {
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+			for (let i = 0; i < particles.length; i++) {
+				const p = particles[i];
+				p.x += p.vx;
+				p.y += p.vy;
+
+				if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+				if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+				const dx = mouse.x - p.x;
+				const dy = mouse.y - p.y;
+				const d = Math.sqrt(dx * dx + dy * dy);
+				if (d < mouseDistance) {
+					const f = (mouseDistance - d) / mouseDistance;
+					p.vx -= (dx / (d || 1)) * f * 0.02;
+					p.vy -= (dy / (d || 1)) * f * 0.02;
+				}
+
+				ctx.beginPath();
+				ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+				ctx.fillStyle = 'rgba(127,86,217,0.6)';
+				ctx.fill();
+
+				for (let j = i + 1; j < particles.length; j++) {
+					const o = particles[j];
+					const dx2 = p.x - o.x;
+					const dy2 = p.y - o.y;
+					const dist = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+					if (dist < connectionDistance) {
+						ctx.beginPath();
+						ctx.moveTo(p.x, p.y);
+						ctx.lineTo(o.x, o.y);
+						ctx.strokeStyle = `rgba(127,86,217,${0.2 * (1 - dist / connectionDistance)})`;
+						ctx.lineWidth = 1;
+						ctx.stroke();
+					}
+				}
+			}
+
+			raf = requestAnimationFrame(animate);
+		};
+
+		animate();
+		return () => {
+			window.removeEventListener('resize', resizeCanvas);
+			window.removeEventListener('mousemove', handleMouseMove);
+			cancelAnimationFrame(raf);
+		};
+	}, []);
+
 	return (
 		<section
 			id="cyberservices"
 			ref={sectionRef}
 			className="relative py-24 lg:py-32 overflow-hidden"
 		>
+			{/* add canvas */}
+			<canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />
 			{/* Decorations to match Services layout */}
 			<div className="absolute top-1/3 left-0 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl -translate-y-1/4 pointer-events-none" />
 			<div className="absolute bottom-20 right-0 w-72 h-72 bg-blue-500/5 rounded-full blur-3xl pointer-events-none" />

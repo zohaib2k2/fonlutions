@@ -10,7 +10,7 @@ const testimonials = [
     role: 'CEO, TechStart Inc.',
     image: testimonial1,
     content:
-      'TechNova transformed our vision into reality. Their full-stack development team delivered a robust platform that scaled seamlessly with our growth. The attention to detail and technical expertise exceeded our expectations.',
+      'Fonulation transformed our vision into reality. Their full-stack development team delivered a robust platform that scaled seamlessly with our growth. The attention to detail and technical expertise exceeded our expectations.',
     rating: 5,
   },
   {
@@ -18,7 +18,7 @@ const testimonials = [
     role: 'CTO, DataFlow Systems',
     image: testimonial2,
     content:
-      'The DevOps automation TechNova implemented reduced our deployment time by 70%. Their team is professional, responsive, and truly understands modern infrastructure needs. Highly recommended!',
+      'The DevOps automation Fonulation implemented reduced our deployment time by 70%. Their team is professional, responsive, and truly understands modern infrastructure needs. Highly recommended!',
     rating: 5,
   },
   {
@@ -26,7 +26,7 @@ const testimonials = [
     role: 'Founder, SecureView',
     image: testimonial3,
     content:
-      'TechNova\'s CCTV installation service was exceptional. They designed a comprehensive security system for our facilities with remote monitoring capabilities. The support team is always available when we need them.',
+      'Fonulation\'s CCTV installation service was exceptional. They designed a comprehensive security system for our facilities with remote monitoring capabilities. The support team is always available when we need them.',
     rating: 5,
   },
 ];
