@@ -26,7 +26,8 @@ export default function Hero() {
       key: 'ims',
       title: 'Our Information Management Service',
       desc: 'Secure storage, backup & data pipelines that keep your information available, searchable and compliant.',
-      image: 'https://static.vecteezy.com/system/resources/previews/027/784/827/non_2x/futuristic-infrastructure-of-a-smart-city-residential-urban-buildings-for-isometric-innovation-flat-design-digital-communication-technology-vector.jpg',
+      image:
+        'https://static.vecteezy.com/system/resources/previews/027/784/827/non_2x/futuristic-infrastructure-of-a-smart-city-residential-urban-buildings-for-isometric-innovation-flat-design-digital-communication-technology-vector.jpg',
     },
   ];
   const [index, setIndex] = useState(0);
@@ -43,7 +44,7 @@ export default function Hero() {
     return () => {
       if (autoplayRef.current) window.clearInterval(autoplayRef.current);
     };
-  }, []);
+  }, [slides.length]);
 
   // Particle network animation (kept from original)
   useEffect(() => {
@@ -152,38 +153,37 @@ export default function Hero() {
       {/* particle canvas */}
       <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none" style={{ zIndex: 1 }} />
 
-      {/* headline at top */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12">
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white">
+      {/* headline at top - add bottom spacing so it doesn't overlap on small screens */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 mb-6">
+        <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-white">
           Empowering modern businesses with reliable technology
         </h1>
       </div>
 
       {/* Slider area */}
-      {/* place the slider slightly above */}
-      <div className="absolute inset-x-0 top-1/2 transform -translate-y-1/2">
-        <div className="w-full max-w-7xl mx-auto">
+      {/* on small screens the slider is positioned naturally below the headline; on lg it is centered vertically */}
+      {/* On small screen each slider must also be centered. */}
+      {/* On mobile the slider should start its position from left */}
+      <div className="relative lg:absolute lg:inset-x-0 lg:top-1/2 lg:-translate-y-1/2">
+        <div className="relative mx-auto max-w-fits sm:px-1 lg:px-8">
           <div className="relative">
-            {/* slides wrapper - made much larger for hero */}
-            <div
-              className="relative overflow-hidden rounded-2xl"
-              style={{ minHeight: '66vh' }}
-            >
+            {/* slides wrapper - responsive min-heights to avoid overlap */}
+            <div className="relative overflow-hidden rounded-2xl min-h-[40vh] sm:min-h-[55vh] lg:min-h-[66vh]">
               <div
-                className="flex transition-transform duration-700"
+                className="flex w-full transition-transform duration-1000 will-change-transform"
                 style={{ transform: `translateX(-${index * 100}%)` }}
               >
                 {slides.map((s, i) => (
                   <div
                     key={s.key}
-                    className="w-full flex-shrink-0 px-6 py-8 lg:py-16"
+                    className={`min-w-full flex-shrink-0 sm:px-6 py-8 lg:py-16 flex justify-center ${i === 0 ? 'ml-5 pl-8' : ''}`}
                     aria-hidden={i !== index}
                   >
-                    <div className="mx-auto max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-10 items-center h-full">
+                    <div className="w-full max-w-md sm:max-w-3xl md:max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-3 items-center h-full">
                       {/* left: text (transparent panel) */}
-                      <div className="col-span-7 h-full flex flex-col justify-center">
-                        <div className="backdrop-blur-sm bg-white/6 rounded-xl p-8 sm:p-12 border border-white/6 h-full flex flex-col justify-center">
-                          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 mb-6">
+                      <div className="max-w-md lg:col-span-7 col-span-1 h-full flex flex-col justify-center">
+                        <div className="backdrop-blur-sm w-2/3 bg-white/6 rounded-xl p-6 sm:p-10 border border-white/6 h-full flex flex-col justify-center">
+                          <div className="inline-flex items-center gap-1 px-1 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 mb-4">
                             <span className="w-2 h-2 rounded-full bg-purple-500 animate-pulse" />
                             <span className="text-sm text-purple-300">Featured</span>
                           </div>
@@ -191,16 +191,16 @@ export default function Hero() {
                           <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold text-white mb-4">
                             {s.title}
                           </h2>
-                          <p className="text-lg md:text-xl text-gray-300 mb-8 max-w-3xl">
+                          <p className="text-lg md:text-xl text-gray-300 mb-6 max-w-3xl">
                             {s.desc}
                           </p>
 
-                          <div className="flex gap-4 pt-2">
-                            <Button size="lg" className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-4 text-base">
+                          <div className="flex flex-col sm:flex-row gap-4 pt-2">
+                            <Button size="lg" className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-4 text-base w-full sm:w-auto">
                               Learn More
                               <ArrowRight className="w-4 h-4 ml-2" />
                             </Button>
-                            <Button size="lg" variant="outline" className="border-white/20 text-white px-6 py-4 text-base" onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })}>
+                            <Button size="lg" variant="outline" className="border-white/20 text-white px-6 py-4 text-base w-full sm:w-auto" onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })}>
                               View Work
                             </Button>
                           </div>
@@ -208,7 +208,7 @@ export default function Hero() {
                       </div>
 
                       {/* right: image */}
-                      <div className="col-span-5 flex items-center justify-center">
+                      <div className="w-2/3 lg:col-span-5 col-span-1 flex items-center justify-center">
                         <div className="w-full rounded-xl overflow-hidden ring-1 ring-white/6">
                           <img
                             src={s.image}
@@ -225,7 +225,6 @@ export default function Hero() {
             </div>
 
             {/* controls */}
-            {/* Make the back ground of controls semi-transparent */}
             <div className="absolute inset-x-0 bottom-1 flex items-center justify-center gap-4">
               <button
                 aria-label="Previous slide"
@@ -239,7 +238,7 @@ export default function Hero() {
                   <button
                     key={i}
                     onClick={() => goto(i)}
-                    className={`w-4 h-4 rounded-full ${i === index ? 'bg-purple-400' : 'bg-blue-600s'}`}
+                    className={`w-4 h-4 rounded-full ${i === index ? 'bg-purple-400' : 'bg-white/20'}`}
                     aria-label={`Go to slide ${i + 1}`}
                   />
                 ))}
