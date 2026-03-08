@@ -176,13 +176,13 @@ export default function Hero() {
                 {slides.map((s, i) => (
                   <div
                     key={s.key}
-                    className={`min-w-full flex-shrink-0 sm:px-6 py-8 lg:py-16 flex justify-center ${i === 0 ? 'ml-5 pl-8' : ''}`}
+                    className={`min-w-full flex-shrink-0 sm:px-6 py-8 lg:py-16 flex justify-center ${i === 0 ? '' : ''}`}
                     aria-hidden={i !== index}
                   >
-                    <div className="w-full max-w-md sm:max-w-3xl md:max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-3 items-center h-full">
+                    <div className="w-full max-w-xs sm:max-w-3xl md:max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-3 items-center h-full">
                       {/* left: text (transparent panel) */}
-                      <div className="max-w-md lg:col-span-7 col-span-1 h-full flex flex-col justify-center">
-                        <div className="backdrop-blur-sm w-2/3 bg-white/6 rounded-xl p-6 sm:p-10 border border-white/6 h-full flex flex-col justify-center">
+                      <div className="max-w-xs md:max-w-xl lg:col-span-7 px-4 md:px-1 col-span-1 h-full flex flex-col justify-center">
+                        <div className="backdrop-blur-sm w-full bg-white/6 rounded-xl p-6 sm:p-10 border border-white/6 h-full flex flex-col justify-center">
                           <div className="inline-flex items-center gap-1 px-1 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 mb-4">
                             <span className="w-2 h-2 rounded-full bg-purple-500 animate-pulse" />
                             <span className="text-sm text-purple-300">Featured</span>
@@ -208,8 +208,8 @@ export default function Hero() {
                       </div>
 
                       {/* right: image */}
-                      <div className="w-2/3 lg:col-span-5 col-span-1 flex items-center justify-center">
-                        <div className="w-full rounded-xl overflow-hidden ring-1 ring-white/6">
+                      <div className="max-w-xs px-4 md:px-1 md:max-w-lg lg:col-span-5 col-span-1 flex items-center justify-center">
+                        <div className="w-full  rounded-xl overflow-hidden ring-1 ring-white/6">
                           <img
                             src={s.image}
                             alt={s.title}
