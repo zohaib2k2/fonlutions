@@ -13,12 +13,13 @@ const brands = [
   { name: 'LuckyCart', file: luckycart_logo },
   { name: 'Glovo', file: glovo_logo },
   { name: 'Maersk', file: mearske_logo },
-  
 ];
 
 export default function OurClients() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const trackRef = useRef<HTMLDivElement | null>(null);
 
+  // Particle background
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -104,10 +105,36 @@ export default function OurClients() {
     };
   }, []);
 
+  // Marquee: measure exact one-set width so the loop is seamless on all screen sizes
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    const setMarqueeWidth = () => {
+      // We render exactly 2 copies, so half of scrollWidth = one full set
+      const oneSetWidth = track.scrollWidth / 2;
+      track.style.setProperty('--marquee-width', `${oneSetWidth}px`);
+    };
+
+    // Run after fonts/images have had a chance to load
+    setMarqueeWidth();
+    window.addEventListener('resize', setMarqueeWidth);
+
+    // Also re-measure once images finish loading
+    const images = track.querySelectorAll('img');
+    images.forEach((img) => img.addEventListener('load', setMarqueeWidth));
+
+    return () => {
+      window.removeEventListener('resize', setMarqueeWidth);
+      images.forEach((img) => img.removeEventListener('load', setMarqueeWidth));
+    };
+  }, []);
+
   return (
     <section id="clients" className="py-20 lg:py-28 relative overflow-hidden">
-      {/* particle canvas behind content */}
+      {/* Particle canvas behind content */}
       <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none" style={{ zIndex: 1 }} />
+
       <div className="max-w-9xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
           <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4">
@@ -118,23 +145,22 @@ export default function OurClients() {
             commitment to excellence.
           </p>
         </div>
-        {/* Make the client slider a bit larger so that its visible */}
 
-        <div className="relative overflow-hidden w-full h-full rounded-2xl border border-white/5 bg-dark-800 p-6">
+        <div className="relative overflow-hidden w-full rounded-2xl border border-white/5 bg-dark-800 p-6">
+          {/* Render exactly 2 copies: original + clone for seamless loop */}
           <div
-            className="clients-marquee whitespace-nowrap w-full h-fulls flex items-center gap-8"
+            ref={trackRef}
+            className="clients-marquee"
             role="list"
             aria-label="Client logos"
           >
-            {/* duplicate list for seamless loop */}
-            {Array.from({ length: 2 }).map((_, r) =>
+            {[0, 1].map((r) =>
               brands.map((b, i) => (
                 <div
                   key={`${b.name}-${r}-${i}`}
                   role="listitem"
-                  className="inline-flex h-36 items-center gap-6 px-4 py-3 rounded-xl bg-dark-700/60 hover:bg-dark-700/80 transition-colors duration-250"
+                  className="inline-flex h-36 items-center gap-6 px-4 py-3 rounded-xl bg-dark-700/60 hover:bg-dark-700/80 transition-colors duration-100"
                 >
-                  {/* make de witte tulip logo bigger only */}
                   <div className="w-40 h-20 flex items-center justify-center">
                     <img
                       src={b.file}
@@ -142,7 +168,6 @@ export default function OurClients() {
                       loading="lazy"
                       className={`max-h-16 object-contain ${b.name === 'de witte tulip' ? 'h-28 w-auto' : ''}`}
                       onError={(e) => {
-                        // hide broken image gracefully
                         (e.currentTarget as HTMLImageElement).style.display = 'none';
                       }}
                     />
@@ -158,13 +183,23 @@ export default function OurClients() {
           </div>
 
           <style>{`
-            .clients-marquee { animation: clients-marquee-anim 20s linear infinite; }
-            .clients-marquee:hover { animation-play-state: paused; }
-            @keyframes clients-marquee-anim { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-            .clients-marquee > * { flex: 0 0 auto; }
-            @media (max-width: 640px) {
-              .clients-marquee { gap: 12px; }
-              .clients-marquee img { max-height: 36px; }
+            .clients-marquee {
+              display: flex;
+              align-items: center;
+              gap: 2rem;
+              width: max-content;
+              white-space: nowrap;
+              animation: clients-marquee-anim 12s linear infinite;
+            }
+            .clients-marquee:hover {
+              animation-play-state: paused;
+            }
+            @keyframes clients-marquee-anim {
+              0%   { transform: translateX(0); }
+              100% { transform: translateX(calc(-1 * var(--marquee-width, 50%))); }
+            }
+            .clients-marquee > * {
+              flex: 0 0 auto;
             }
           `}</style>
         </div>
