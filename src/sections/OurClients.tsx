@@ -1,10 +1,14 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
-import mearske_logo from '/images/clients/maersk.png';
+import mearske_logo from '/images/logos/maersk.png';
 import glovo_logo from '/images/clients/glovo.png';
 import luckycart_logo from '/images/clients/lucky_cart.png';
 import unilever_logo from '/images/logos/unilever_logo.svg';
-import huawve_logo from '/images/logos/huawei-logo.png';
+import huawve_logo from '/images/logos/huawei.png';
 import de_witte_tulip_logo from '/images/clients/logo-de-witte-tulip-transparent.png';
+import accenture from '/images/logos/accenture.png';
+import dpworld from '/images/logos/dpworld.png';
+import kelloggs from '/images/logos/kelloggs.png';
+
 
 const brands = [
   { name: 'de witte tulip', file: de_witte_tulip_logo },
@@ -13,6 +17,9 @@ const brands = [
   { name: 'LuckyCart', file: luckycart_logo },
   { name: 'Glovo', file: glovo_logo },
   { name: 'Maersk', file: mearske_logo },
+  { name: 'Accenture', file: accenture },
+  { name: 'DP World', file: dpworld },
+  { name: 'Kelloggs', file: kelloggs },
 ];
 
 export default function OurClients() {
@@ -241,7 +248,7 @@ export default function OurClients() {
                   <div
                     key={`${b.name}-${r}-${i}`}
                     role="listitem"
-                    className="inline-flex h-36 items-center gap-6 px-4 py-3 rounded-xl bg-dark-700/60 hover:bg-dark-700/80 transition-colors duration-100"
+                    className="inline-flex h-36 items-center gap-6 px-4 py-3 rounded-xl hover:bg-dark-700/80 transition-colors duration-100"
                     style={{ pointerEvents: isDragging ? 'none' : 'auto' }}
                   >
                     <div className="w-40 h-20 flex items-center justify-center">
@@ -256,10 +263,10 @@ export default function OurClients() {
                         }}
                       />
                     </div>
-                    <div className="min-w-[110px]">
+                    {/* <div className="min-w-[110px]">
                       <div className="text-sm font-semibold text-white">{b.name}</div>
                       <div className="text-xs text-gray-300">Client</div>
-                    </div>
+                    </div> */}
                   </div>
                 ))
               )}
