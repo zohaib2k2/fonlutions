@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import mearske_logo from '/images/clients/maersk.png';
 import glovo_logo from '/images/clients/glovo.png';
 import luckycart_logo from '/images/clients/lucky_cart.png';
@@ -19,28 +19,128 @@ export default function OurClients() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const trackRef = useRef<HTMLDivElement | null>(null);
 
-  // Particle background
+  // --- Marquee state (all in refs to avoid re-render jank) ---
+  const oneSetWidthRef = useRef(0);
+  const offsetRef = useRef(0);
+  const rafRef = useRef(0);
+  const AUTO_SPEED = 1.2; // px per frame
+  const isDraggingRef = useRef(false);
+  const isHoveringRef = useRef(false);
+  const dragStartXRef = useRef(0);
+  const dragStartOffsetRef = useRef(0);
+  const velocityRef = useRef(0);
+  const lastDragXRef = useRef(0);
+  const lastDragTimeRef = useRef(0);
+
+  const [isDragging, setIsDragging] = useState(false); // only for cursor style
+
+  // Measure one-set width
+  const measure = useCallback(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    oneSetWidthRef.current = track.scrollWidth / 2;
+  }, []);
+
+  // Write offset to DOM directly (no React re-render)
+  const applyOffset = useCallback(() => {
+    const track = trackRef.current;
+    if (!track || oneSetWidthRef.current === 0) return;
+    const w = oneSetWidthRef.current;
+    let o = offsetRef.current % w;
+    if (o > 0) o -= w;
+    if (o < -w) o += w;
+    offsetRef.current = o;
+    track.style.transform = `translateX(${o}px)`;
+  }, []);
+
+  // rAF loop — auto-scroll + momentum
+  useEffect(() => {
+    const loop = () => {
+      if (!isDraggingRef.current) {
+        if (!isHoveringRef.current) {
+          offsetRef.current -= AUTO_SPEED;
+        }
+        if (Math.abs(velocityRef.current) > 0.05) {
+          offsetRef.current += velocityRef.current;
+          velocityRef.current *= 0.92; // friction
+        } else {
+          velocityRef.current = 0;
+        }
+      }
+      applyOffset();
+      rafRef.current = requestAnimationFrame(loop);
+    };
+    rafRef.current = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [applyOffset]);
+
+  // Measure on mount, resize, image load
+  useEffect(() => {
+    measure();
+    window.addEventListener('resize', measure);
+    const imgs = trackRef.current?.querySelectorAll('img') ?? [];
+    imgs.forEach((img) => img.addEventListener('load', measure));
+    return () => {
+      window.removeEventListener('resize', measure);
+      imgs.forEach((img) => img.removeEventListener('load', measure));
+    };
+  }, [measure]);
+
+  // --- Pointer handlers (mouse + touch unified) ---
+  const onPointerDown = useCallback((e: React.PointerEvent) => {
+    isDraggingRef.current = true;
+    setIsDragging(true);
+    velocityRef.current = 0;
+    dragStartXRef.current = e.clientX;
+    dragStartOffsetRef.current = offsetRef.current;
+    lastDragXRef.current = e.clientX;
+    lastDragTimeRef.current = performance.now();
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+  }, []);
+
+  const onPointerMove = useCallback((e: React.PointerEvent) => {
+    if (!isDraggingRef.current) return;
+    const dx = e.clientX - dragStartXRef.current;
+    offsetRef.current = dragStartOffsetRef.current + dx;
+
+    const now = performance.now();
+    const dt = now - lastDragTimeRef.current;
+    if (dt > 0) {
+      // Scale to ~60fps frame velocity
+      velocityRef.current = ((e.clientX - lastDragXRef.current) / dt) * 130;
+    }
+    lastDragXRef.current = e.clientX;
+    lastDragTimeRef.current = now;
+  }, []);
+
+  const onPointerUp = useCallback(() => {
+    isDraggingRef.current = false;
+    setIsDragging(false);
+  }, []);
+
+  const onMouseEnter = useCallback(() => { isHoveringRef.current = true; }, []);
+  const onMouseLeave = useCallback(() => {
+    isHoveringRef.current = false;
+    isDraggingRef.current = false;
+    setIsDragging(false);
+  }, []);
+
+  // --- Particle canvas ---
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
+    const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
     resize();
     window.addEventListener('resize', resize);
 
     type Particle = { x: number; y: number; vx: number; vy: number; radius: number };
     const particles: Particle[] = [];
-    const particleCount = 60;
-    const connectionDistance = 150;
-    const mouseDistance = 200;
     const mouse = { x: -9999, y: -9999 };
 
-    for (let i = 0; i < particleCount; i++) {
+    for (let i = 0; i < 60; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
@@ -53,86 +153,47 @@ export default function OurClients() {
     const onMove = (e: MouseEvent) => { mouse.x = e.clientX; mouse.y = e.clientY; };
     window.addEventListener('mousemove', onMove);
 
-    let raf = 0;
+    let pRaf = 0;
     const loop = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
-        p.x += p.vx;
-        p.y += p.vy;
+        p.x += p.vx; p.y += p.vy;
         if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
         if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-
-        const dx = mouse.x - p.x;
-        const dy = mouse.y - p.y;
+        const dx = mouse.x - p.x, dy = mouse.y - p.y;
         const d = Math.sqrt(dx * dx + dy * dy);
-        if (d < mouseDistance) {
-          const f = (mouseDistance - d) / mouseDistance;
+        if (d < 200) {
+          const f = (200 - d) / 200;
           p.vx -= (dx / (d || 1)) * f * 0.02;
           p.vy -= (dy / (d || 1)) * f * 0.02;
         }
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(127,86,217,0.45)';
-        ctx.fill();
-
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(127,86,217,0.45)'; ctx.fill();
         for (let j = i + 1; j < particles.length; j++) {
           const o = particles[j];
-          const dx2 = p.x - o.x;
-          const dy2 = p.y - o.y;
+          const dx2 = p.x - o.x, dy2 = p.y - o.y;
           const dist = Math.sqrt(dx2 * dx2 + dy2 * dy2);
-          if (dist < connectionDistance) {
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(o.x, o.y);
-            ctx.strokeStyle = `rgba(127,86,217,${0.14 * (1 - dist / connectionDistance)})`;
-            ctx.lineWidth = 1;
-            ctx.stroke();
+          if (dist < 150) {
+            ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(o.x, o.y);
+            ctx.strokeStyle = `rgba(127,86,217,${0.14 * (1 - dist / 150)})`;
+            ctx.lineWidth = 1; ctx.stroke();
           }
         }
       }
-
-      raf = requestAnimationFrame(loop);
+      pRaf = requestAnimationFrame(loop);
     };
     loop();
 
     return () => {
       window.removeEventListener('resize', resize);
       window.removeEventListener('mousemove', onMove);
-      cancelAnimationFrame(raf);
-    };
-  }, []);
-
-  // Marquee: measure exact one-set width so the loop is seamless on all screen sizes
-  useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
-
-    const setMarqueeWidth = () => {
-      // We render exactly 2 copies, so half of scrollWidth = one full set
-      const oneSetWidth = track.scrollWidth / 2;
-      track.style.setProperty('--marquee-width', `${oneSetWidth}px`);
-    };
-
-    // Run after fonts/images have had a chance to load
-    setMarqueeWidth();
-    window.addEventListener('resize', setMarqueeWidth);
-
-    // Also re-measure once images finish loading
-    const images = track.querySelectorAll('img');
-    images.forEach((img) => img.addEventListener('load', setMarqueeWidth));
-
-    return () => {
-      window.removeEventListener('resize', setMarqueeWidth);
-      images.forEach((img) => img.removeEventListener('load', setMarqueeWidth));
+      cancelAnimationFrame(pRaf);
     };
   }, []);
 
   return (
     <section id="clients" className="py-20 lg:py-28 relative overflow-hidden">
-      {/* Particle canvas behind content */}
       <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none" style={{ zIndex: 1 }} />
 
       <div className="max-w-9xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -147,61 +208,63 @@ export default function OurClients() {
         </div>
 
         <div className="relative overflow-hidden w-full rounded-2xl border border-white/5 bg-dark-800 p-6">
-          {/* Render exactly 2 copies: original + clone for seamless loop */}
+          {/* Left fade edge */}
           <div
-            ref={trackRef}
-            className="clients-marquee"
-            role="list"
-            aria-label="Client logos"
+            className="pointer-events-none absolute inset-y-0 left-0 w-16 z-10"
+            style={{ background: 'linear-gradient(to right, #111118, transparent)' }}
+          />
+          {/* Right fade edge */}
+          <div
+            className="pointer-events-none absolute inset-y-0 right-0 w-16 z-10"
+            style={{ background: 'linear-gradient(to left, #111118, transparent)' }}
+          />
+
+          {/* Draggable wrapper */}
+          <div
+            className="overflow-hidden"
+            style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
+            onPointerDown={onPointerDown}
+            onPointerMove={onPointerMove}
+            onPointerUp={onPointerUp}
+            onPointerCancel={onPointerUp}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
           >
-            {[0, 1].map((r) =>
-              brands.map((b, i) => (
-                <div
-                  key={`${b.name}-${r}-${i}`}
-                  role="listitem"
-                  className="inline-flex h-36 items-center gap-6 px-4 py-3 rounded-xl bg-dark-700/60 hover:bg-dark-700/80 transition-colors duration-100"
-                >
-                  <div className="w-40 h-20 flex items-center justify-center">
-                    <img
-                      src={b.file}
-                      alt={`${b.name} logo`}
-                      loading="lazy"
-                      className={`max-h-16 object-contain ${b.name === 'de witte tulip' ? 'h-28 w-auto' : ''}`}
-                      onError={(e) => {
-                        (e.currentTarget as HTMLImageElement).style.display = 'none';
-                      }}
-                    />
+            {/* Track — moved via direct DOM transform, no CSS animation */}
+            <div
+              ref={trackRef}
+              className="flex items-center gap-8 w-max will-change-transform select-none"
+            >
+              {/* Exactly 2 copies for seamless loop */}
+              {[0, 1].map((r) =>
+                brands.map((b, i) => (
+                  <div
+                    key={`${b.name}-${r}-${i}`}
+                    role="listitem"
+                    className="inline-flex h-36 items-center gap-6 px-4 py-3 rounded-xl bg-dark-700/60 hover:bg-dark-700/80 transition-colors duration-100"
+                    style={{ pointerEvents: isDragging ? 'none' : 'auto' }}
+                  >
+                    <div className="w-40 h-20 flex items-center justify-center">
+                      <img
+                        src={b.file}
+                        alt={`${b.name} logo`}
+                        draggable={false}
+                        loading="lazy"
+                        className={`max-h-16 object-contain ${b.name === 'de witte tulip' ? 'h-28 w-auto' : ''}`}
+                        onError={(e) => {
+                          (e.currentTarget as HTMLImageElement).style.display = 'none';
+                        }}
+                      />
+                    </div>
+                    <div className="min-w-[110px]">
+                      <div className="text-sm font-semibold text-white">{b.name}</div>
+                      <div className="text-xs text-gray-300">Client</div>
+                    </div>
                   </div>
-
-                  <div className="min-w-[110px]">
-                    <div className="text-sm font-semibold text-white">{b.name}</div>
-                    <div className="text-xs text-gray-300">Client</div>
-                  </div>
-                </div>
-              ))
-            )}
+                ))
+              )}
+            </div>
           </div>
-
-          <style>{`
-            .clients-marquee {
-              display: flex;
-              align-items: center;
-              gap: 2rem;
-              width: max-content;
-              white-space: nowrap;
-              animation: clients-marquee-anim 12s linear infinite;
-            }
-            .clients-marquee:hover {
-              animation-play-state: paused;
-            }
-            @keyframes clients-marquee-anim {
-              0%   { transform: translateX(0); }
-              100% { transform: translateX(calc(-1 * var(--marquee-width, 50%))); }
-            }
-            .clients-marquee > * {
-              flex: 0 0 auto;
-            }
-          `}</style>
         </div>
       </div>
     </section>
