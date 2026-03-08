@@ -214,7 +214,7 @@ export default function OurClients() {
           </p>
         </div>
 
-        <div className="relative overflow-hidden w-full rounded-2xl border border-white/5 bg-dark-800 p-6">
+        <div className="relative bg-transparent overflow-hidden w-full rounded-2xl border border-white/5 bg-dark-800 p-6">
           {/* Left fade edge */}
           <div
             className="pointer-events-none absolute inset-y-0 left-0 w-16 z-10"
