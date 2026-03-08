@@ -16,11 +16,11 @@ export default function Homepage() {
     <main className="relative z-10">
       <Hero />
       <About />
+      <OurClients />
       <Services />
       <CyberServices />
       <Process />
       {/* <Projects /> */}
-      <OurClients />
       <Testimonials />
       <Contact />
     </main>
