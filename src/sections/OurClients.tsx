@@ -18,9 +18,10 @@ const brands = [
   { name: 'Glovo', file: glovo_logo },
   { name: 'Maersk', file: mearske_logo },
   { name: 'Accenture', file: accenture },
-  { name: 'DP World', file: dpworld },
   { name: 'Kelloggs', file: kelloggs },
 ];
+
+const shuffledBrands = [...brands].sort(() => Math.random() - 0.5);
 
 export default function OurClients() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -248,7 +249,7 @@ export default function OurClients() {
                   <div
                     key={`${b.name}-${r}-${i}`}
                     role="listitem"
-                    className="inline-flex h-36 items-center gap-6 px-4 py-3 rounded-xl hover:bg-dark-700/80 transition-colors duration-100"
+                    className="inline-flex h-36 items-center md:gap-6 md:px-4 gap-3 px-1 py-3 rounded-xl hover:bg-dark-700/80 transition-colors duration-100"
                     style={{ pointerEvents: isDragging ? 'none' : 'auto' }}
                   >
                     <div className="w-40 h-20 flex items-center justify-center">
