@@ -146,7 +146,7 @@ export default function Testimonials() {
                   </blockquote>
 
                   {/* Author */}
-                  <div className="flex items-center gap-4">
+                  {/* <div className="flex items-center gap-4">
                     <img
                       src={testimonial.image}
                       alt={testimonial.name}
@@ -160,7 +160,7 @@ export default function Testimonials() {
                         {testimonial.role}
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               ))}
             </div>
