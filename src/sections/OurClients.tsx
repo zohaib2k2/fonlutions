@@ -6,7 +6,6 @@ import unilever_logo from '/images/logos/unilever_logo.svg';
 import huawve_logo from '/images/logos/huawei.png';
 import de_witte_tulip_logo from '/images/clients/logo-de-witte-tulip-transparent.png';
 import accenture from '/images/logos/accenture.png';
-import dpworld from '/images/logos/dpworld.png';
 import kelloggs from '/images/logos/kelloggs.png';
 
 
@@ -21,7 +20,6 @@ const brands = [
   { name: 'Kelloggs', file: kelloggs },
 ];
 
-const shuffledBrands = [...brands].sort(() => Math.random() - 0.5);
 
 export default function OurClients() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
