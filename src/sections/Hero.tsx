@@ -3,6 +3,7 @@ import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import herobg from '/cloud-consulting-v2-upscaled.png';
 import devopsImg from '/images/our-devops-solutions2.jpg';
+import SoftdeveImg from '/images/softwareEngineering.png'
 
 export default function Hero() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -14,7 +15,7 @@ export default function Hero() {
       key: 'dev',
       title: 'Our Development Solutions',
       desc: 'End-to-end web & mobile apps using modern frameworks, clean APIs and scalable architectures.',
-      image: 'https://ocean12tech.com/wp-content/uploads/2023/11/Software-Development.jpg',
+      image: SoftdeveImg,
     },
     {
       key: 'devops',

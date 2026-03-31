@@ -10,7 +10,7 @@ const navLinks = [
   { name: 'Home', href: '#hero' },
   { name: 'About', href: '/about' },
   { name: 'Services', href: '#services' },
-  { name: 'Solutions', href: '#solutions' },
+  { name: 'Solutions', href: '/services' },
   { name: 'Technology', href: '#cyberservices' }, // placeholder for future "Blog" or "Resources" section
   { name: 'Contact', href: '#contact' },
 ];

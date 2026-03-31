@@ -4,6 +4,7 @@ import Navigation from '@/sections/Navigation';
 import Footer from '@/sections/Footer';
 import Homepage from '@/pages/Homepage';
 import AboutPage from '@/pages/AboutPage';
+import ServicesPage from '@/pages/OurServices';
 /* Layout shares Navigation and Footer across routes */
 function Layout() {
   return (
@@ -41,6 +42,7 @@ export default function App() {
             {/* Add more page routes here, e.g.:
             */}
                 <Route path="about" element={<AboutPage />} />
+                <Route path="services" element={<ServicesPage />} />
           </Route>
 
           {/* fallback */}
