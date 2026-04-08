@@ -21,20 +21,21 @@ const services = [
   },
   {
     icon: Cloud,
-    title: 'DevOps Solutions',
+    title: 'Cloud & DevOps Solutions',
     description:
-      'Streamline your development pipeline with CI/CD automation, infrastructure as code, and cloud-native solutions. We help you deploy faster and more reliably.',
-    features: ['CI/CD Pipelines', 'Docker & Kubernetes', 'AWS/Azure/GCP', 'Monitoring'],
+      'Streamline your development pipeline and run reliable, scalable cloud infrastructure. We deliver CI/CD automation, infrastructure-as-code, containerization, monitoring, cloud architecture, migration and managed cloud services.',
+    features: [
+      'CI/CD Pipelines',
+      'Docker & Kubernetes',
+      'AWS/Azure/GCP',
+      'Monitoring',
+      'Cloud Architecture',
+      'Migration Services',
+      'Managed Cloud',
+      'Cost Optimization',
+    ],
     image: devopsImg,
     color: 'from-blue-500 to-cyan-500',
-  },
-  {
-    icon: FiUploadCloud,
-    title: 'Cloud Services',
-    description: "Empower your business with scalable cloud infrastructure and services. We provide cloud architecture design, migration, and management to help you leverage the full potential of the cloud.",
-    features: ['Cloud Architecture', 'Migration Services', 'Managed Cloud', 'Cost Optimization'],
-    image: cloudServiceImg,
-    color: 'from-green-500 to-emerald-500',
   },
   {
     icon: LucideCloudCog,

@@ -8,8 +8,8 @@ import TechnologyFlyout from '@/sections/TechnologyFlyout';
 
 const navLinks = [
   { name: 'Home', href: '#hero' },
+  { name: 'Blog', href: '/blog' },
   { name: 'About', href: '/about' },
-  { name: 'Services', href: '#services' },
   { name: 'Solutions', href: '/services' },
   { name: 'Technology', href: '#cyberservices' }, // placeholder for future "Blog" or "Resources" section
   { name: 'Contact', href: '#contact' },

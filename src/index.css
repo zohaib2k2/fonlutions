@@ -44,7 +44,7 @@
 
 @layer utilities {
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-purple-500 via-purple-400 to-blue-500;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-purple-200 via-purple-200 to-blue-300;
   }
   
   .bg-gradient-radial {
@@ -257,6 +257,16 @@
 
 .line-reveal:hover::after {
   transform: translateX(0);
+}
+
+/* Heading colour — light blue-purple tint instead of pure white */
+h1.text-white,
+h2.text-white,
+h3.text-white,
+h4.text-white,
+h5.text-white,
+h6.text-white {
+  color: #e0e7ff; /* indigo-100: sits between purple and blue, clearly readable on dark */
 }
 
 /* Grid background */

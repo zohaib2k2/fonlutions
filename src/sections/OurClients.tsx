@@ -203,7 +203,7 @@ export default function OurClients() {
       <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none" style={{ zIndex: 1 }} />
 
       <div className="max-w-9xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-8">
+        <div className="mb-8 text-center">
           <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4">
             Our <span className="text-gradient">Clients</span>
           </h2>
