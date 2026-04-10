@@ -85,6 +85,7 @@ export default function CyberServices() {
 	const canvasRef = useRef<HTMLCanvasElement | null>(null); // particle canvas ref
 	const [isVisible, setIsVisible] = useState(false);
 	const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+	const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
 	useEffect(() => {
 		const obs = new IntersectionObserver(
@@ -225,12 +226,12 @@ export default function CyberServices() {
 				</div>
 
 				{/* Services grid (layout matching Services.tsx) */}
-				<div className="grid md:grid-cols-2 gap-6 lg:gap-8">
+				<div className="grid grid-cols-2 gap-3 sm:gap-6 lg:gap-8 items-start">
 					{cyberServices.map((service, index) => (
 						<div
 							key={service.title}
 							className={`group relative rounded-2xl overflow-hidden transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
-							style={{ transitionDelay: `${0.15 + index * 0.12}s`, minHeight: 320 }}
+							style={{ transitionDelay: `${0.15 + index * 0.12}s` }}
 							onMouseEnter={() => setHoveredIndex(index)}
 							onMouseLeave={() => setHoveredIndex(null)}
 						>
@@ -248,67 +249,68 @@ export default function CyberServices() {
 								<div className={`absolute inset-0 bg-gradient-to-br ${service.color}`} style={{ opacity: 0.08 }} />
 								<div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(17,24,39,0.55), rgba(17,24,39,0.85))' }} />
 
-								{/* bluish-purple glow overlay on hover */}
 								<div
-									className={`absolute inset-0 rounded-2xl pointer-events-none transition-opacity duration-500`}
+									className="absolute inset-0 rounded-2xl pointer-events-none transition-opacity duration-500"
 									style={{
 										background: 'radial-gradient(600px 300px at 20% 30%, rgba(124,58,237,0.16), rgba(79,70,229,0.08) 25%, transparent 60%), radial-gradient(400px 200px at 80% 70%, rgba(59,130,246,0.08), transparent 40%)',
 										opacity: hoveredIndex === index ? 1 : 0,
 										mixBlendMode: 'screen',
-										transform: hoveredIndex === index ? 'scale(1.02)' : undefined,
-										transitionDelay: hoveredIndex === index ? '0ms' : undefined,
 									}}
 								/>
 							</div>
 
 							{/* Content */}
-							<div className="relative p-8 lg:p-10 flex flex-col h-full">
-								<div className="flex items-center gap-6">
+							<div className="relative p-3 sm:p-8 lg:p-10 flex flex-col sm:min-h-[320px]">
+								{/* Icon + Title row */}
+								<div className="flex items-start gap-2 sm:gap-4">
 									<div
-										className={`w-16 h-16 rounded-xl flex items-center justify-center text-white bg-gradient-to-br ${service.color} transition-transform duration-500 group-hover:scale-110`}
+										className={`w-8 h-8 sm:w-14 sm:h-14 shrink-0 rounded-lg sm:rounded-xl flex items-center justify-center text-white bg-gradient-to-br ${service.color} transition-transform duration-500 group-hover:scale-110`}
 									>
-										<service.icon className="w-8 h-8" />
+										<service.icon className="w-4 h-4 sm:w-7 sm:h-7" />
 									</div>
 
-									<div>
-										<h3
-											className={`text-2xl font-semibold text-white ${
-												hoveredIndex === index ? 'text-purple-400' : ''
-											}`}
-										>
-											{service.title}
-										</h3>
-										<p className="text-sm text-gray-400 mt-1 max-w-xl">
-											{service.description}
-										</p>
-									</div>
+									<h3 className={`text-xs sm:text-xl font-semibold leading-snug text-white mt-1 sm:mt-2 ${hoveredIndex === index ? 'sm:text-purple-400' : ''}`}>
+										{service.title}
+									</h3>
 								</div>
 
-								<div className="mt-6 flex flex-wrap gap-2">
+								{/* Description — hidden on mobile, shown when expanded */}
+								<p className={`text-gray-400 mt-2 sm:mt-3 text-[10px] sm:text-sm ${expandedIndex === index ? 'block' : 'hidden'} sm:block`}>
+									{service.description}
+								</p>
+
+								{/* Features — hidden on mobile, shown when expanded */}
+								<div className={`mt-2 sm:mt-4 flex-wrap gap-1 sm:gap-2 ${expandedIndex === index ? 'flex' : 'hidden'} sm:flex`}>
 									{service.features.map((f) => (
 										<span
 											key={f}
-											className="px-3 py-1 text-xs rounded-full bg-white/5 border border-white/10 text-gray-300"
+											className="px-2 py-0.5 sm:px-3 sm:py-1 text-[10px] sm:text-xs rounded-full bg-white/5 border border-white/10 text-gray-300"
 										>
 											{f}
 										</span>
 									))}
 								</div>
 
-								<div className="mt-auto flex items-center justify-between">
+								{/* CTA */}
+								<div className="mt-3 sm:mt-auto sm:pt-4 flex items-center justify-between">
 									<a
 										href="#contact"
-										className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors"
+										onClick={(e) => {
+											if (window.innerWidth < 640) {
+												e.preventDefault();
+												setExpandedIndex(expandedIndex === index ? null : index);
+											}
+										}}
+										className="inline-flex items-center gap-1 sm:gap-2 text-purple-400 hover:text-purple-300 transition-colors"
 									>
-										<span className="text-sm font-medium">Talk to an expert</span>
-										<ArrowRight className="w-4 h-4" />
+										<span className="text-[10px] sm:text-sm font-medium">
+											<span className="sm:hidden">{expandedIndex === index ? 'Hide' : 'Learn More'}</span>
+											<span className="hidden sm:inline">Talk to an expert</span>
+										</span>
+										<ArrowRight className={`w-3 h-3 sm:w-4 sm:h-4 transition-transform ${expandedIndex === index ? 'rotate-90 sm:rotate-0' : 'group-hover:translate-x-1'}`} />
 									</a>
 
-									<div
-										className={`w-3 h-3 rounded-full ${
-											hoveredIndex === index ? 'bg-purple-400' : 'bg-white/5'
-										}`}
-									/>
+									<div className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full hidden sm:block ${hoveredIndex === index ? 'bg-purple-400' : 'bg-white/5'}`} />
 								</div>
 							</div>
 

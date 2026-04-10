@@ -79,6 +79,7 @@ export default function Services() {
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
   // particle canvas reference (same animation used in Hero)
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -224,7 +225,7 @@ export default function Services() {
         </div>
 
         {/* Services Grid */}
-        <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
+        <div className="grid grid-cols-2 gap-3 sm:gap-6 lg:gap-8 items-start">
           {services.map((service, index) => (
             <div
               key={service.title}
@@ -254,30 +255,30 @@ export default function Services() {
               </div>
 
               {/* Content */}
-              <div className="relative p-8 lg:p-10 min-h-[400px] flex flex-col">
+              <div className="relative p-3 sm:p-6 lg:p-10 sm:min-h-[340px] md:min-h-[400px] flex flex-col">
                 {/* Icon */}
                 <div
-                  className={`w-14 h-14 rounded-xl bg-gradient-to-br ${service.color} flex items-center justify-center mb-6 transition-transform duration-500 group-hover:scale-110 group-hover:shadow-glow`}
+                  className={`w-8 h-8 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-lg sm:rounded-xl bg-gradient-to-br ${service.color} flex items-center justify-center mb-2 sm:mb-5 transition-transform duration-500 group-hover:scale-110 group-hover:shadow-glow`}
                 >
-                  <service.icon className="w-7 h-7 text-white" />
+                  <service.icon className="w-4 h-4 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-white" />
                 </div>
 
                 {/* Title */}
-                <h3 className="text-2xl font-bold text-white mb-4">
+                <h3 className="text-xs sm:text-xl md:text-2xl font-bold text-white mb-2 sm:mb-4 leading-snug">
                   {service.title}
                 </h3>
 
                 {/* Description */}
-                <p className="text-gray-400 mb-6 flex-grow">
+                <p className={`text-gray-400 mb-3 sm:mb-6 flex-grow text-[10px] sm:text-sm md:text-base ${expandedIndex === index ? 'block' : 'hidden'} sm:block`}>
                   {service.description}
                 </p>
 
                 {/* Features */}
-                <div className="flex flex-wrap gap-2 mb-6">
+                <div className={`${expandedIndex === index ? 'flex' : 'hidden'} sm:flex flex-wrap gap-1 sm:gap-2 mb-3 sm:mb-6 transition-all`}>
                   {service.features.map((feature) => (
                     <span
                       key={feature}
-                      className="px-3 py-1 text-xs rounded-full bg-white/5 border border-white/10 text-gray-300"
+                      className="px-2 py-0.5 sm:px-3 sm:py-1 text-[10px] sm:text-xs rounded-full bg-white/5 border border-white/10 text-gray-300"
                     >
                       {feature}
                     </span>
@@ -287,10 +288,19 @@ export default function Services() {
                 {/* CTA */}
                 <a
                   href="#contact"
-                  className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors group/link"
+                  onClick={(e) => {
+                    if (window.innerWidth < 640) {
+                      e.preventDefault();
+                      setExpandedIndex(expandedIndex === index ? null : index);
+                    }
+                  }}
+                  className="inline-flex items-center gap-1 sm:gap-2 text-purple-400 hover:text-purple-300 transition-colors group/link"
                 >
-                  <span className="text-sm font-medium">Learn More</span>
-                  <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
+                  <span className="text-[10px] sm:text-sm font-medium">
+                    <span className="sm:hidden">{expandedIndex === index ? 'Hide' : 'Learn More'}</span>
+                    <span className="hidden sm:inline">Learn More</span>
+                  </span>
+                  <ArrowRight className={`w-3 h-3 sm:w-4 sm:h-4 transition-transform ${expandedIndex === index ? 'sm:translate-x-1 rotate-90 sm:rotate-0' : 'group-hover/link:translate-x-1'}`} />
                 </a>
               </div>
 
